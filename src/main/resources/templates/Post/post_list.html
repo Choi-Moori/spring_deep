@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <object style="width:100%;" data="../common/header.html" type="text/html"></object>
+
+    <div class="container ml-auto" style="margin-top: 20px; margin-bottom: 20px;">
+        <div class="float-end">
+            <a href="./post_register_js_json.html" >
+                <button type="submit" class="btn btn-primary">
+                    글쓰기
+                </button>
+            </a>
+        </div>
+        <table class="table" id="table1" >
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Contents</th>
+                    <!-- <th>userID</th> -->
+                </tr>
+            </thead>
+            <tbody id="bodyData">
+            
+            </tbody>
+        </table>
+    </div>
+    <script src = "https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        async function teacherServerData(){
+            const response1 = await axios.get("http://ec2-3-34-135-235.ap-northeast-2.compute.amazonaws.com:8081/post/list");
+            const allData = response1.data;
+            // console.log(allData);
+            let bodyData = document.getElementById("bodyData");
+            for (let i = 0; i < allData.length; i++) {
+                const id = allData[i].id;
+                const title = allData[i].title;
+                const contents = allData[i].contents;
+                bodyData.innerHTML += `<tr><td>${id}</td><td>${title}</td><td>${contents}</td></tr>`
+            }
+
+        }
+        teacherServerData();
+        </script>
+</body>
+</html>
