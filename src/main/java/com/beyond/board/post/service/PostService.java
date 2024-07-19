@@ -6,6 +6,7 @@ import com.beyond.board.post.domain.Post;
 import com.beyond.board.post.dto.PostCreateReqDto;
 import com.beyond.board.post.dto.PostDetResDto;
 import com.beyond.board.post.dto.PostListResDto;
+import com.beyond.board.post.dto.PostUpdateReqDto;
 import com.beyond.board.post.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,13 +37,12 @@ public class PostService {
 //        Long author_id = dto.getAuthor_id();
 //        authorRepository.findById(author_id).orElseThrow(()-> new EntityNotFoundException("없는 회원"));
         Author author = authorService.authorFindByEmail(dto.getAuthor_email());
-
         Post post = dto.toEntity(author);
         postRepository.save(post);
     }
 
     public List<PostListResDto> postList(){
-        List<Post> postList = postRepository.findAll();
+        List<Post> postList = postRepository.findAllFetch();
         List<PostListResDto> postResDtoList = new ArrayList<>();
 
         for(Post post : postList){
@@ -57,5 +57,15 @@ public class PostService {
                 .orElseThrow(()->new EntityNotFoundException("없는 글 입니다"));
 
         return post.detFromEntity();
+    }
+
+    public void postDelete(Long id){
+        postRepository.deleteById(id);
+    }
+
+    public void postUpdate(Long id, PostUpdateReqDto dto){
+        Post post = postRepository.findById(id).orElseThrow(()->new EntityNotFoundException("없는 게시글입니다."));
+        post.updatePost(dto);
+        postRepository.save(post);
     }
 }

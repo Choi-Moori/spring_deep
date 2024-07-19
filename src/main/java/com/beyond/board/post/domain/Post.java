@@ -4,6 +4,7 @@ import com.beyond.board.author.domain.Author;
 import com.beyond.board.common.BaseTimeEntity;
 import com.beyond.board.post.dto.PostDetResDto;
 import com.beyond.board.post.dto.PostListResDto;
+import com.beyond.board.post.dto.PostUpdateReqDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,7 +28,8 @@ public class Post extends BaseTimeEntity {
     @Column(length = 3000)
     private String contents;
 
-    @ManyToOne
+//    연관관계의 주인은 fk가 있는 post
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="author_id")
     private Author author;
 
@@ -35,7 +37,6 @@ public class Post extends BaseTimeEntity {
         return PostListResDto.builder()
                 .id(this.id)
                 .title(this.title)
-//                .author(this.author)
                 .author_email(this.author.getEmail())
                 .build();
     }
@@ -44,11 +45,15 @@ public class Post extends BaseTimeEntity {
         LocalDateTime createdTime = this.getCreateTime();
         String value = createdTime.getYear()+"년 "
                 +createdTime.getMonthValue()+"월 "    // getMonth()로 하면 6월인 경우 July가 나온다.
-                +createdTime.getDayOfMonth()+"일";
+                +createdTime.getDayOfMonth()+"일 "
+                +createdTime.getHour() + ":"
+                +createdTime.getMinute();
         LocalDateTime updatedTime = this.getUpdatedTime();
         String value1 = updatedTime.getYear()+"년 "
                 +updatedTime.getMonthValue()+"월 "    // getMonth()로 하면 6월인 경우 July가 나온다.
-                +updatedTime.getDayOfMonth()+"일";
+                +updatedTime.getDayOfMonth()+"일 "
+                +updatedTime.getHour() + ":"
+                +updatedTime.getMinute();
 
         return PostDetResDto.builder()
                 .id(this.id)
@@ -58,5 +63,11 @@ public class Post extends BaseTimeEntity {
                 .createdTime(value)
                 .updatedTime(value1)
                 .build();
+    }
+
+    public Post updatePost(PostUpdateReqDto dto){
+        this.title = dto.getTitle();
+        this.contents=dto.getContents();
+        return this;
     }
 }
