@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,13 +41,24 @@ public class PostService {
 //        Long author_id = dto.getAuthor_id();
 //        authorRepository.findById(author_id).orElseThrow(()-> new EntityNotFoundException("없는 회원"));
         Author author = authorService.authorFindByEmail(dto.getAuthor_email());
-        Post post = dto.toEntity(author);
+        LocalDateTime appointmentTime = null;
+
+        if(dto.getAppointment().equals("Y") && !dto.getAppointmentTime().isEmpty()) {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+            appointmentTime = LocalDateTime.parse(dto.getAppointmentTime(), dateTimeFormatter);
+            LocalDateTime now = LocalDateTime.now();
+            if(appointmentTime.isBefore(now)){
+                throw new IllegalArgumentException("시간 입력이 잘못되었습니다.");
+            }
+        }
+        Post post = dto.toEntity(author, appointmentTime);
         postRepository.save(post);
     }
 
     public Page<PostListResDto> postList(Pageable pageable){
 //        List<Post> postList = postRepository.findAllFetch();
-        Page<Post> posts = postRepository.findAll(pageable);
+//        Page<Post> posts = postRepository.findAll(pageable);
+        Page<Post> posts = postRepository.findByAppointment(pageable, "N");
         Page<PostListResDto> postListResDtos = posts.map(a->a.listFromEntity());
 
         return postListResDtos;

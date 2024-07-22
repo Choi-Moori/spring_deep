@@ -23,7 +23,13 @@
             <label for="contents">내용 입력</label><br>
             <textarea name="contents" id="contents" class="form-control" rows="10" maxlen="800" placeholder="내용을 작성하세요."></textarea>
         </div>
-        <br>
+        <div>
+            <label >예약여부</label>
+            <input type="radio" name="appointment" value="Y">Yes
+            <input type="radio" name="appointment" value="N" checked>No
+            <label >예약시간</label>
+            <input type="datetime-local" name="appointmentTime">
+        </div>
         <div class="float-end">
             <button type="submit" class="btn btn-primary">SUBMIT</button>
         </div>

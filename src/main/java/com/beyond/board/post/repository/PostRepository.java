@@ -19,6 +19,8 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 //    페이징 처리하는 이유 : 서버의 부하를 줄이기 위해
     Page<Post> findAll(Pageable pageable);
 
+    Page<Post> findByAppointment(Pageable pageable, String appointment);
+
 //    jpql을 적용하여 네이밍룰을 통한 방식이 아닌 메서드 생성.
 //    select p.*, a.* from post p left join author a on p.author_id = a.id;
     @Query("select p from Post p left join fetch p.author")

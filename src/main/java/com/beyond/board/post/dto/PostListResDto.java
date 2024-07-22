@@ -16,4 +16,5 @@ public class PostListResDto {
 //    Author객체 그 자체를 return하게 되면 Author안에 Post가 재참조 되어, 순환참조가 발생한다.
 //    private Author author;
     private String author_email;
+    private String appointment;
 }

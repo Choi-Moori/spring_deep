@@ -29,7 +29,7 @@ public class PostController {
         return "/Post/post_register";
     }
     @PostMapping("/create")
-    public String postCreate(PostCreateReqDto dto){
+    public String postCreate(@ModelAttribute PostCreateReqDto dto){
         postService.postCreate(dto);
         return "redirect:/post/list";
     }
@@ -41,7 +41,7 @@ public class PostController {
                                    sort = "createdTime",
                                    direction = Sort.Direction.DESC)
                            Pageable pageable){
-        model.addAttribute("postList", postService.postListPage(pageable));
+        model.addAttribute("postList", postService.postList(pageable));
         return "Post/post_list";
     }
 

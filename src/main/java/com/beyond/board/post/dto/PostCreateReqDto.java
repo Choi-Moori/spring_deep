@@ -6,19 +6,24 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 public class PostCreateReqDto {
     private String title;
     private String contents;
     private String author_email;
+    private String appointment;
+    private String appointmentTime;
 
-    public Post toEntity(Author author){
-        System.out.println("Post[toEntity]");
+    public Post toEntity(Author author, LocalDateTime appointmentTime){
         Post post = Post.builder()
                 .title(this.title)
                 .contents(this.contents)
                 .author(author)
+                .appointment(this.appointment)
+                .appointmentTime(appointmentTime)
                 .build();
         return post;
     }

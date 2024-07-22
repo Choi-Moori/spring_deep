@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -28,6 +29,11 @@ public class Post extends BaseTimeEntity {
     @Column(length = 3000)
     private String contents;
 
+    @Column
+    private LocalDateTime appointmentTime;
+    @Column
+    private String appointment;
+
 //    연관관계의 주인은 fk가 있는 post
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="author_id")
@@ -38,6 +44,7 @@ public class Post extends BaseTimeEntity {
                 .id(this.id)
                 .title(this.title)
                 .author_email(this.author.getEmail())
+                .appointment(this.appointment)
                 .build();
     }
 
