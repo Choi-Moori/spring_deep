@@ -42,7 +42,7 @@ public class Post extends BaseTimeEntity {
     }
 
     public PostDetResDto detFromEntity(){
-        LocalDateTime createdTime = this.getCreateTime();
+        LocalDateTime createdTime = this.getCreatedTime();
         String value = createdTime.getYear()+"년 "
                 +createdTime.getMonthValue()+"월 "    // getMonth()로 하면 6월인 경우 July가 나온다.
                 +createdTime.getDayOfMonth()+"일 "

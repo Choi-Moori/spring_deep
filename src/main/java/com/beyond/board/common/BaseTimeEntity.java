@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @MappedSuperclass
 public abstract class BaseTimeEntity {
     @CreationTimestamp
-    private LocalDateTime createTime;
+    private LocalDateTime createdTime;
 
     @CreationTimestamp
     private LocalDateTime updatedTime;
